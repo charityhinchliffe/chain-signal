@@ -1,0 +1,434 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #12141c;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-background: #ffffff;
+  --color-foreground: #12141c;
+  --color-ink: #12141c;
+  --color-muted: #5c6272;
+  --color-line: #e6e8f0;
+  --color-wash: #f5f6fb;
+  --color-accent: #6d4aff;
+  --color-accent-ink: #5432d6;
+  --color-accent-2: #2563eb;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@property --signal-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+html {
+  background: #ffffff;
+  scroll-padding-top: 5.5rem;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  overflow-x: clip;
+}
+
+::selection {
+  background: #e4dcff;
+  color: #12141c;
+}
+
+.text-gradient {
+  background-image: linear-gradient(
+    100deg,
+    #6d4aff 0%,
+    #3d6bff 42%,
+    #7a5cff 72%,
+    #2563eb 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.dot-grid {
+  background-image: radial-gradient(rgba(18, 20, 28, 0.16) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse at center, #000 8%, transparent 72%);
+}
+
+.signal-frame {
+  background: conic-gradient(
+    from var(--signal-angle),
+    #6d4aff,
+    #9eb6ff,
+    #2563eb,
+    #c4b5fd,
+    #6d4aff
+  );
+}
+
+.hairline-flow {
+  background-image: linear-gradient(120deg, #6d4aff, #8ea2ff, #2563eb, #c4b5fd, #6d4aff);
+  background-size: 300% 100%;
+}
+
+.draw-line {
+  height: 1px;
+  transform-origin: left center;
+  background: linear-gradient(90deg, #6d4aff, #2563eb);
+}
+
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  border-radius: 999px;
+  background: linear-gradient(#6d4aff, #2563eb);
+}
+
+.live-dot {
+  position: relative;
+  height: 8px;
+  width: 8px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #6d4aff, #2563eb);
+}
+
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: rgba(109, 74, 255, 0.35);
+}
+
+.is-dissolving span {
+  display: inline-block;
+  animation: lift-away 0.75s ease forwards;
+}
+
+.destroyed-in {
+  animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.15s both;
+}
+
+.life-message,
+.life-gone {
+  display: flex;
+  align-items: center;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes gradient-flow {
+  to {
+    background-position: 200% center;
+  }
+}
+
+@keyframes hairline-shift {
+  to {
+    background-position: 300% center;
+  }
+}
+
+@keyframes signal-spin {
+  to {
+    --signal-angle: 360deg;
+  }
+}
+
+@keyframes drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(36px, 22px, 0) scale(1.08);
+  }
+}
+
+@keyframes drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-30px, -28px, 0) scale(1.06);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+@keyframes live-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+}
+
+@keyframes drain {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+@keyframes lift-away {
+  to {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes arc-pulse {
+  0%,
+  100% {
+    opacity: 0.28;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes life-show {
+  0%,
+  38% {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+  52%,
+  88% {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+@keyframes life-hide {
+  0%,
+  40% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  54%,
+  86% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes unseal {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.drain-custom,
+.drain-read {
+  width: 100%;
+}
+
+.expire-ring {
+  stroke-dasharray: 176;
+  stroke-dashoffset: 0;
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .text-gradient {
+    animation: gradient-flow 9s linear infinite;
+  }
+
+  .signal-frame {
+    animation: signal-spin 10s linear infinite;
+  }
+
+  .hairline-flow {
+    animation: hairline-shift 14s linear infinite;
+  }
+
+  .orb-a {
+    animation: drift-a 18s ease-in-out infinite;
+  }
+
+  .orb-b {
+    animation: drift-b 22s ease-in-out infinite;
+  }
+
+  .hero-rise {
+    animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-rise-late {
+    animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+  }
+
+  .marquee-track {
+    animation: marquee 42s linear infinite;
+  }
+
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+
+  .caret {
+    animation: blink 1.05s steps(2, start) infinite;
+  }
+
+  .live-dot::after {
+    animation: live-pulse 2.2s ease-in-out infinite;
+  }
+
+  .drain-bar {
+    animation: drain 3.6s linear forwards;
+  }
+
+  .drain-read {
+    animation: drain 12s linear forwards;
+  }
+
+  .drain-custom {
+    animation-name: drain;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+
+  .expire-ring {
+    stroke-dashoffset: 176;
+    animation: unseal 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .draw-once {
+    transform-origin: left center;
+    animation: draw 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .pop-in {
+    animation: rise 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .arc {
+    animation: arc-pulse 2.6s ease-in-out infinite;
+  }
+
+  .arc-2 {
+    animation-delay: 0.25s;
+  }
+
+  .arc-3 {
+    animation-delay: 0.5s;
+  }
+
+  .life-message {
+    animation: life-show 7s ease-in-out infinite;
+  }
+
+  .life-gone {
+    animation: life-hide 7s ease-in-out infinite;
+  }
+
+  .draw-line {
+    animation: draw 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-timeline: view();
+    animation-range: entry 10% entry 45%;
+  }
+
+  .reveal {
+    animation: reveal-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 38%;
+  }
+
+  .reveal-late {
+    animation-range: entry 10% entry 48%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-dissolving span,
+  .destroyed-in {
+    animation: none;
+  }
+}
